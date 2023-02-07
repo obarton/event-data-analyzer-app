@@ -1,0 +1,552 @@
+{
+ "Resources": {
+  "CustomResourceHandlerServiceRole41AEC181": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "event-data-analyzer"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-AuthStack/CustomResourceHandler/ServiceRole/Resource"
+   }
+  },
+  "CustomResourceHandlerServiceRoleDefaultPolicy73F93F56": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:PutObject",
+        "s3:DeleteObject"
+       ],
+       "Effect": "Allow",
+       "Resource": "arn:aws:s3:::sstbootstrap-uswest210626703-tkcejj58nwjs/*"
+      },
+      {
+       "Action": [
+        "ssm:GetParametersByPath",
+        "ssm:PutParameter"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        "arn:aws:ssm:us-west-2:504522024136:parameter/sst/event-data-analyzer/dev/*",
+        "arn:aws:ssm:us-west-2:504522024136:parameter/sst/event-data-analyzer/.fallback/*"
+       ]
+      },
+      {
+       "Action": [
+        "ssm:GetParameter",
+        "ssm:PutParameter",
+        "ssm:DeleteParameter"
+       ],
+       "Effect": "Allow",
+       "Resource": "arn:aws:ssm:us-west-2:504522024136:parameter/*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "CustomResourceHandlerServiceRoleDefaultPolicy73F93F56",
+    "Roles": [
+     {
+      "Ref": "CustomResourceHandlerServiceRole41AEC181"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-AuthStack/CustomResourceHandler/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "CustomResourceHandlerE8FB56BA": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-504522024136-us-west-2",
+     "S3Key": "377989a13861b4580168439d6861f200ef9082ee51cb10c5374964c056db8b47.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "CustomResourceHandlerServiceRole41AEC181",
+      "Arn"
+     ]
+    },
+    "Handler": "index.handler",
+    "MemorySize": 1024,
+    "Runtime": "nodejs16.x",
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "event-data-analyzer"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ],
+    "Timeout": 900
+   },
+   "DependsOn": [
+    "CustomResourceHandlerServiceRoleDefaultPolicy73F93F56",
+    "CustomResourceHandlerServiceRole41AEC181"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-AuthStack/CustomResourceHandler/Resource",
+    "aws:asset:path": "asset.377989a13861b4580168439d6861f200ef9082ee51cb10c5374964c056db8b47",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "StackMetadata": {
+   "Type": "Custom::StackMetadata",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomResourceHandlerE8FB56BA",
+      "Arn"
+     ]
+    },
+    "App": "event-data-analyzer",
+    "Stage": "dev",
+    "Stack": "dev-event-data-analyzer-AuthStack",
+    "SSTVersion": "1.18.4",
+    "BootstrapBucketName": "sstbootstrap-uswest210626703-tkcejj58nwjs",
+    "Metadata": [
+     {
+      "id": "Auth",
+      "addr": "c869dd93be53e63c4403dd6e34508f5b31c9389f4e",
+      "stack": "dev-event-data-analyzer-AuthStack",
+      "type": "Cognito",
+      "data": {
+       "identityPoolId": {
+        "Ref": "AuthIdentityPool12DFB5E1"
+       },
+       "userPoolId": {
+        "Ref": "AuthUserPool8115E87F"
+       },
+       "triggers": []
+      }
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-AuthStack/StackMetadata/Default"
+   }
+  },
+  "AuthUserPool8115E87F": {
+   "Type": "AWS::Cognito::UserPool",
+   "Properties": {
+    "AccountRecoverySetting": {
+     "RecoveryMechanisms": [
+      {
+       "Name": "verified_phone_number",
+       "Priority": 1
+      },
+      {
+       "Name": "verified_email",
+       "Priority": 2
+      }
+     ]
+    },
+    "AdminCreateUserConfig": {
+     "AllowAdminCreateUserOnly": false
+    },
+    "AutoVerifiedAttributes": [
+     "email"
+    ],
+    "EmailVerificationMessage": "The verification code to your new account is {####}",
+    "EmailVerificationSubject": "Verify your new account",
+    "SmsVerificationMessage": "The verification code to your new account is {####}",
+    "UsernameAttributes": [
+     "email"
+    ],
+    "UsernameConfiguration": {
+     "CaseSensitive": false
+    },
+    "UserPoolName": "dev-event-data-analyzer-Auth",
+    "UserPoolTags": {
+     "sst:app": "event-data-analyzer",
+     "sst:stage": "dev"
+    },
+    "VerificationMessageTemplate": {
+     "DefaultEmailOption": "CONFIRM_WITH_CODE",
+     "EmailMessage": "The verification code to your new account is {####}",
+     "EmailSubject": "Verify your new account",
+     "SmsMessage": "The verification code to your new account is {####}"
+    }
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-AuthStack/Auth/UserPool/Resource"
+   }
+  },
+  "AuthUserPoolClient0AA456E4": {
+   "Type": "AWS::Cognito::UserPoolClient",
+   "Properties": {
+    "UserPoolId": {
+     "Ref": "AuthUserPool8115E87F"
+    },
+    "AllowedOAuthFlows": [
+     "implicit",
+     "code"
+    ],
+    "AllowedOAuthFlowsUserPoolClient": true,
+    "AllowedOAuthScopes": [
+     "profile",
+     "phone",
+     "email",
+     "openid",
+     "aws.cognito.signin.user.admin"
+    ],
+    "CallbackURLs": [
+     "https://example.com"
+    ],
+    "SupportedIdentityProviders": [
+     "COGNITO"
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-AuthStack/Auth/UserPoolClient/Resource"
+   }
+  },
+  "AuthIdentityPool12DFB5E1": {
+   "Type": "AWS::Cognito::IdentityPool",
+   "Properties": {
+    "AllowUnauthenticatedIdentities": true,
+    "CognitoIdentityProviders": [
+     {
+      "ClientId": {
+       "Ref": "AuthUserPoolClient0AA456E4"
+      },
+      "ProviderName": {
+       "Fn::Join": [
+        "",
+        [
+         "cognito-idp.us-west-2.",
+         {
+          "Ref": "AWS::URLSuffix"
+         },
+         "/",
+         {
+          "Ref": "AuthUserPool8115E87F"
+         }
+        ]
+       ]
+      }
+     }
+    ],
+    "IdentityPoolName": "dev-event-data-analyzer-Auth",
+    "OpenIdConnectProviderARNs": [],
+    "SupportedLoginProviders": {}
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-AuthStack/Auth/IdentityPool"
+   }
+  },
+  "AuthIdentityPoolAuthRoleD14DA003": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRoleWithWebIdentity",
+       "Condition": {
+        "StringEquals": {
+         "cognito-identity.amazonaws.com:aud": {
+          "Ref": "AuthIdentityPool12DFB5E1"
+         }
+        },
+        "ForAnyValue:StringLike": {
+         "cognito-identity.amazonaws.com:amr": "authenticated"
+        }
+       },
+       "Effect": "Allow",
+       "Principal": {
+        "Federated": "cognito-identity.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "event-data-analyzer"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-AuthStack/Auth/IdentityPoolAuthRole/Resource"
+   }
+  },
+  "AuthIdentityPoolAuthRoleDefaultPolicy32D17CAC": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "mobileanalytics:PutEvents",
+        "cognito-sync:*",
+        "cognito-identity:*"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": "execute-api:Invoke",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          "arn:aws:execute-api:us-west-2:504522024136:",
+          {
+           "Fn::ImportValue": "dev-event-data-analyzer-ApiStack:ExportsOutputRefApiCD79AAA0A1504A18"
+          },
+          "/*"
+         ]
+        ]
+       }
+      },
+      {
+       "Action": "s3:*",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          {
+           "Fn::ImportValue": "dev-event-data-analyzer-StorageStack:ExportsOutputFnGetAttUploadsBucketC4B27CC7Arn515ECA45"
+          },
+          "/private/${cognito-identity.amazonaws.com:sub}/*"
+         ]
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "AuthIdentityPoolAuthRoleDefaultPolicy32D17CAC",
+    "Roles": [
+     {
+      "Ref": "AuthIdentityPoolAuthRoleD14DA003"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-AuthStack/Auth/IdentityPoolAuthRole/DefaultPolicy/Resource"
+   }
+  },
+  "AuthIdentityPoolUnauthRoleA8DE48F3": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRoleWithWebIdentity",
+       "Condition": {
+        "StringEquals": {
+         "cognito-identity.amazonaws.com:aud": {
+          "Ref": "AuthIdentityPool12DFB5E1"
+         }
+        },
+        "ForAnyValue:StringLike": {
+         "cognito-identity.amazonaws.com:amr": "unauthenticated"
+        }
+       },
+       "Effect": "Allow",
+       "Principal": {
+        "Federated": "cognito-identity.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "event-data-analyzer"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-AuthStack/Auth/IdentityPoolUnauthRole/Resource"
+   }
+  },
+  "AuthIdentityPoolUnauthRoleDefaultPolicy0417F857": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "mobileanalytics:PutEvents",
+        "cognito-sync:*"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "AuthIdentityPoolUnauthRoleDefaultPolicy0417F857",
+    "Roles": [
+     {
+      "Ref": "AuthIdentityPoolUnauthRoleA8DE48F3"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-AuthStack/Auth/IdentityPoolUnauthRole/DefaultPolicy/Resource"
+   }
+  },
+  "AuthIdentityPoolRoleAttachmentB0D3DC72": {
+   "Type": "AWS::Cognito::IdentityPoolRoleAttachment",
+   "Properties": {
+    "IdentityPoolId": {
+     "Ref": "AuthIdentityPool12DFB5E1"
+    },
+    "Roles": {
+     "authenticated": {
+      "Fn::GetAtt": [
+       "AuthIdentityPoolAuthRoleD14DA003",
+       "Arn"
+      ]
+     },
+     "unauthenticated": {
+      "Fn::GetAtt": [
+       "AuthIdentityPoolUnauthRoleA8DE48F3",
+       "Arn"
+      ]
+     }
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-AuthStack/Auth/IdentityPoolRoleAttachment"
+   }
+  }
+ },
+ "Outputs": {
+  "Region": {
+   "Value": "us-west-2"
+  },
+  "UserPoolId": {
+   "Value": {
+    "Ref": "AuthUserPool8115E87F"
+   }
+  },
+  "IdentityPoolId": {
+   "Value": {
+    "Ref": "AuthIdentityPool12DFB5E1"
+   }
+  },
+  "UserPoolClientId": {
+   "Value": {
+    "Ref": "AuthUserPoolClient0AA456E4"
+   }
+  },
+  "ExportsOutputRefAuthUserPool8115E87F4F9C6D4C": {
+   "Value": {
+    "Ref": "AuthUserPool8115E87F"
+   },
+   "Export": {
+    "Name": "dev-event-data-analyzer-AuthStack:ExportsOutputRefAuthUserPool8115E87F4F9C6D4C"
+   }
+  },
+  "ExportsOutputRefAuthIdentityPool12DFB5E192D02E93": {
+   "Value": {
+    "Ref": "AuthIdentityPool12DFB5E1"
+   },
+   "Export": {
+    "Name": "dev-event-data-analyzer-AuthStack:ExportsOutputRefAuthIdentityPool12DFB5E192D02E93"
+   }
+  },
+  "ExportsOutputRefAuthUserPoolClient0AA456E49BCE9731": {
+   "Value": {
+    "Ref": "AuthUserPoolClient0AA456E4"
+   },
+   "Export": {
+    "Name": "dev-event-data-analyzer-AuthStack:ExportsOutputRefAuthUserPoolClient0AA456E49BCE9731"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

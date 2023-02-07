@@ -1,0 +1,1181 @@
+{
+ "Resources": {
+  "CustomResourceHandlerServiceRole41AEC181": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "event-data-analyzer"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-FrontendStack/CustomResourceHandler/ServiceRole/Resource"
+   }
+  },
+  "CustomResourceHandlerServiceRoleDefaultPolicy73F93F56": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:PutObject",
+        "s3:DeleteObject"
+       ],
+       "Effect": "Allow",
+       "Resource": "arn:aws:s3:::sstbootstrap-uswest210626703-tkcejj58nwjs/*"
+      },
+      {
+       "Action": [
+        "ssm:GetParametersByPath",
+        "ssm:PutParameter"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        "arn:aws:ssm:us-west-2:504522024136:parameter/sst/event-data-analyzer/dev/*",
+        "arn:aws:ssm:us-west-2:504522024136:parameter/sst/event-data-analyzer/.fallback/*"
+       ]
+      },
+      {
+       "Action": [
+        "ssm:GetParameter",
+        "ssm:PutParameter",
+        "ssm:DeleteParameter"
+       ],
+       "Effect": "Allow",
+       "Resource": "arn:aws:ssm:us-west-2:504522024136:parameter/*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "CustomResourceHandlerServiceRoleDefaultPolicy73F93F56",
+    "Roles": [
+     {
+      "Ref": "CustomResourceHandlerServiceRole41AEC181"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-FrontendStack/CustomResourceHandler/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "CustomResourceHandlerE8FB56BA": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-504522024136-us-west-2",
+     "S3Key": "377989a13861b4580168439d6861f200ef9082ee51cb10c5374964c056db8b47.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "CustomResourceHandlerServiceRole41AEC181",
+      "Arn"
+     ]
+    },
+    "Handler": "index.handler",
+    "MemorySize": 1024,
+    "Runtime": "nodejs16.x",
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "event-data-analyzer"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ],
+    "Timeout": 900
+   },
+   "DependsOn": [
+    "CustomResourceHandlerServiceRoleDefaultPolicy73F93F56",
+    "CustomResourceHandlerServiceRole41AEC181"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-FrontendStack/CustomResourceHandler/Resource",
+    "aws:asset:path": "asset.377989a13861b4580168439d6861f200ef9082ee51cb10c5374964c056db8b47",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "StackMetadata": {
+   "Type": "Custom::StackMetadata",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomResourceHandlerE8FB56BA",
+      "Arn"
+     ]
+    },
+    "App": "event-data-analyzer",
+    "Stage": "dev",
+    "Stack": "dev-event-data-analyzer-FrontendStack",
+    "SSTVersion": "1.18.4",
+    "BootstrapBucketName": "sstbootstrap-uswest210626703-tkcejj58nwjs",
+    "Metadata": [
+     {
+      "id": "ReactSite",
+      "addr": "c8cd642fb36f1889a59cf1844f1f885751229fbbc7",
+      "stack": "dev-event-data-analyzer-FrontendStack",
+      "type": "StaticSite",
+      "data": {
+       "distributionId": {
+        "Ref": "ReactSiteDistributionFFB1766B"
+       }
+      }
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-FrontendStack/StackMetadata/Default"
+   }
+  },
+  "ReactSiteAwsCliLayer032ED8F7": {
+   "Type": "AWS::Lambda::LayerVersion",
+   "Properties": {
+    "Content": {
+     "S3Bucket": "cdk-hnb659fds-assets-504522024136-us-west-2",
+     "S3Key": "c409e6c5845f1f349df8cd84e160bf6f1c35d2b060b63e1f032f9bd39d4542cc.zip"
+    },
+    "Description": "/opt/awscli/aws"
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-FrontendStack/ReactSite/AwsCliLayer/Resource",
+    "aws:asset:path": "asset.c409e6c5845f1f349df8cd84e160bf6f1c35d2b060b63e1f032f9bd39d4542cc.zip",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Content"
+   }
+  },
+  "ReactSiteS3BucketB9BB7C04": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "aws-cdk:auto-delete-objects",
+      "Value": "true"
+     },
+     {
+      "Key": "sst:app",
+      "Value": "event-data-analyzer"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-FrontendStack/ReactSite/S3Bucket/Resource"
+   }
+  },
+  "ReactSiteS3BucketPolicyD88B458D": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "ReactSiteS3BucketB9BB7C04"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:GetBucket*",
+        "s3:List*",
+        "s3:DeleteObject*"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::GetAtt": [
+          "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+          "Arn"
+         ]
+        }
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ReactSiteS3BucketB9BB7C04",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "ReactSiteS3BucketB9BB7C04",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": "s3:GetObject",
+       "Effect": "Allow",
+       "Principal": {
+        "CanonicalUser": {
+         "Fn::GetAtt": [
+          "ReactSiteDistributionOrigin1S3OriginE341B3F7",
+          "S3CanonicalUserId"
+         ]
+        }
+       },
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          {
+           "Fn::GetAtt": [
+            "ReactSiteS3BucketB9BB7C04",
+            "Arn"
+           ]
+          },
+          "/*"
+         ]
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-FrontendStack/ReactSite/S3Bucket/Policy/Resource"
+   }
+  },
+  "ReactSiteS3BucketAutoDeleteObjectsCustomResource20A5650F": {
+   "Type": "Custom::S3AutoDeleteObjects",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+      "Arn"
+     ]
+    },
+    "BucketName": {
+     "Ref": "ReactSiteS3BucketB9BB7C04"
+    }
+   },
+   "DependsOn": [
+    "ReactSiteS3BucketPolicyD88B458D"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-FrontendStack/ReactSite/S3Bucket/AutoDeleteObjectsCustomResource/Default"
+   }
+  },
+  "ReactSiteS3UploaderServiceRoleEA10A23A": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "event-data-analyzer"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-FrontendStack/ReactSite/S3Uploader/ServiceRole/Resource"
+   }
+  },
+  "ReactSiteS3UploaderServiceRoleDefaultPolicy2FE62292": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:GetObject*",
+        "s3:GetBucket*",
+        "s3:List*",
+        "s3:DeleteObject*",
+        "s3:PutObject",
+        "s3:PutObjectLegalHold",
+        "s3:PutObjectRetention",
+        "s3:PutObjectTagging",
+        "s3:PutObjectVersionTagging",
+        "s3:Abort*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ReactSiteS3BucketB9BB7C04",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "ReactSiteS3BucketB9BB7C04",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:GetObject*",
+        "s3:GetBucket*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":s3:::cdk-hnb659fds-assets-504522024136-us-west-2"
+          ]
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":s3:::cdk-hnb659fds-assets-504522024136-us-west-2/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "ReactSiteS3UploaderServiceRoleDefaultPolicy2FE62292",
+    "Roles": [
+     {
+      "Ref": "ReactSiteS3UploaderServiceRoleEA10A23A"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-FrontendStack/ReactSite/S3Uploader/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "ReactSiteS3Uploader4099484B": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-504522024136-us-west-2",
+     "S3Key": "7f9b0644cd8fdc8233b0e049ce57cf85b64369851fe06ec6a83824fdb2f8edf9.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "ReactSiteS3UploaderServiceRoleEA10A23A",
+      "Arn"
+     ]
+    },
+    "Handler": "s3-upload.handler",
+    "Layers": [
+     {
+      "Ref": "ReactSiteAwsCliLayer032ED8F7"
+     }
+    ],
+    "MemorySize": 1024,
+    "Runtime": "python3.7",
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "event-data-analyzer"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ],
+    "Timeout": 900
+   },
+   "DependsOn": [
+    "ReactSiteS3UploaderServiceRoleDefaultPolicy2FE62292",
+    "ReactSiteS3UploaderServiceRoleEA10A23A"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-FrontendStack/ReactSite/S3Uploader/Resource",
+    "aws:asset:path": "asset.7f9b0644cd8fdc8233b0e049ce57cf85b64369851fe06ec6a83824fdb2f8edf9",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "ReactSiteS3HandlerServiceRoleB1C8F614": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "event-data-analyzer"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-FrontendStack/ReactSite/S3Handler/ServiceRole/Resource"
+   }
+  },
+  "ReactSiteS3HandlerServiceRoleDefaultPolicy50C54561": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:GetObject*",
+        "s3:GetBucket*",
+        "s3:List*",
+        "s3:DeleteObject*",
+        "s3:PutObject",
+        "s3:PutObjectLegalHold",
+        "s3:PutObjectRetention",
+        "s3:PutObjectTagging",
+        "s3:PutObjectVersionTagging",
+        "s3:Abort*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ReactSiteS3BucketB9BB7C04",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "ReactSiteS3BucketB9BB7C04",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": "lambda:InvokeFunction",
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ReactSiteS3Uploader4099484B",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "ReactSiteS3Uploader4099484B",
+             "Arn"
+            ]
+           },
+           ":*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "ReactSiteS3HandlerServiceRoleDefaultPolicy50C54561",
+    "Roles": [
+     {
+      "Ref": "ReactSiteS3HandlerServiceRoleB1C8F614"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-FrontendStack/ReactSite/S3Handler/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "ReactSiteS3HandlerE190AB4B": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-504522024136-us-west-2",
+     "S3Key": "7f9b0644cd8fdc8233b0e049ce57cf85b64369851fe06ec6a83824fdb2f8edf9.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "ReactSiteS3HandlerServiceRoleB1C8F614",
+      "Arn"
+     ]
+    },
+    "Environment": {
+     "Variables": {
+      "UPLOADER_FUNCTION_NAME": {
+       "Ref": "ReactSiteS3Uploader4099484B"
+      }
+     }
+    },
+    "Handler": "s3-handler.handler",
+    "Layers": [
+     {
+      "Ref": "ReactSiteAwsCliLayer032ED8F7"
+     }
+    ],
+    "MemorySize": 1024,
+    "Runtime": "python3.7",
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "event-data-analyzer"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ],
+    "Timeout": 900
+   },
+   "DependsOn": [
+    "ReactSiteS3HandlerServiceRoleDefaultPolicy50C54561",
+    "ReactSiteS3HandlerServiceRoleB1C8F614"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-FrontendStack/ReactSite/S3Handler/Resource",
+    "aws:asset:path": "asset.7f9b0644cd8fdc8233b0e049ce57cf85b64369851fe06ec6a83824fdb2f8edf9",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "ReactSiteS3Deployment8044D733": {
+   "Type": "Custom::SSTBucketDeployment",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "ReactSiteS3HandlerE190AB4B",
+      "Arn"
+     ]
+    },
+    "Sources": [
+     {
+      "BucketName": "cdk-hnb659fds-assets-504522024136-us-west-2",
+      "ObjectKey": "e92cebd97aa4fc90b2cfada94c74441b3c3e9180679f92b80b8852c10d80b119.zip"
+     }
+    ],
+    "DestinationBucketName": {
+     "Ref": "ReactSiteS3BucketB9BB7C04"
+    },
+    "FileOptions": [
+     [
+      "--exclude",
+      "*",
+      "--include",
+      "*.html",
+      "--cache-control",
+      "max-age=0,no-cache,no-store,must-revalidate"
+     ],
+     [
+      "--exclude",
+      "*",
+      "--include",
+      "*.js",
+      "--include",
+      "*.css",
+      "--cache-control",
+      "max-age=31536000,public,immutable"
+     ]
+    ],
+    "ReplaceValues": [
+     {
+      "files": "**/*.html",
+      "search": "{{ REACT_APP_API_URL }}",
+      "replace": {
+       "Fn::ImportValue": "dev-event-data-analyzer-ApiStack:ExportsOutputFnGetAttApiCD79AAA0ApiEndpoint389C4905"
+      }
+     },
+     {
+      "files": "**/*.js",
+      "search": "{{ REACT_APP_API_URL }}",
+      "replace": {
+       "Fn::ImportValue": "dev-event-data-analyzer-ApiStack:ExportsOutputFnGetAttApiCD79AAA0ApiEndpoint389C4905"
+      }
+     },
+     {
+      "files": "**/*.html",
+      "search": "{{ REACT_APP_BUCKET }}",
+      "replace": {
+       "Fn::ImportValue": "dev-event-data-analyzer-StorageStack:ExportsOutputRefUploadsBucketC4B27CC7CCC94A6B"
+      }
+     },
+     {
+      "files": "**/*.js",
+      "search": "{{ REACT_APP_BUCKET }}",
+      "replace": {
+       "Fn::ImportValue": "dev-event-data-analyzer-StorageStack:ExportsOutputRefUploadsBucketC4B27CC7CCC94A6B"
+      }
+     },
+     {
+      "files": "**/*.html",
+      "search": "{{ REACT_APP_USER_POOL_ID }}",
+      "replace": {
+       "Fn::ImportValue": "dev-event-data-analyzer-AuthStack:ExportsOutputRefAuthUserPool8115E87F4F9C6D4C"
+      }
+     },
+     {
+      "files": "**/*.js",
+      "search": "{{ REACT_APP_USER_POOL_ID }}",
+      "replace": {
+       "Fn::ImportValue": "dev-event-data-analyzer-AuthStack:ExportsOutputRefAuthUserPool8115E87F4F9C6D4C"
+      }
+     },
+     {
+      "files": "**/*.html",
+      "search": "{{ REACT_APP_IDENTITY_POOL_ID }}",
+      "replace": {
+       "Fn::ImportValue": "dev-event-data-analyzer-AuthStack:ExportsOutputRefAuthIdentityPool12DFB5E192D02E93"
+      }
+     },
+     {
+      "files": "**/*.js",
+      "search": "{{ REACT_APP_IDENTITY_POOL_ID }}",
+      "replace": {
+       "Fn::ImportValue": "dev-event-data-analyzer-AuthStack:ExportsOutputRefAuthIdentityPool12DFB5E192D02E93"
+      }
+     },
+     {
+      "files": "**/*.html",
+      "search": "{{ REACT_APP_USER_POOL_CLIENT_ID }}",
+      "replace": {
+       "Fn::ImportValue": "dev-event-data-analyzer-AuthStack:ExportsOutputRefAuthUserPoolClient0AA456E49BCE9731"
+      }
+     },
+     {
+      "files": "**/*.js",
+      "search": "{{ REACT_APP_USER_POOL_CLIENT_ID }}",
+      "replace": {
+       "Fn::ImportValue": "dev-event-data-analyzer-AuthStack:ExportsOutputRefAuthUserPoolClient0AA456E49BCE9731"
+      }
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-FrontendStack/ReactSite/S3Deployment/Default"
+   }
+  },
+  "ReactSiteDistributionOrigin1S3OriginE341B3F7": {
+   "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
+   "Properties": {
+    "CloudFrontOriginAccessIdentityConfig": {
+     "Comment": "Identity for deveventdataanalyzerFrontendStackReactSiteDistributionOrigin13C9D0DA8"
+    }
+   },
+   "DependsOn": [
+    "ReactSiteS3Deployment8044D733"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-FrontendStack/ReactSite/Distribution/Origin1/S3Origin/Resource"
+   }
+  },
+  "ReactSiteDistributionFFB1766B": {
+   "Type": "AWS::CloudFront::Distribution",
+   "Properties": {
+    "DistributionConfig": {
+     "Aliases": [],
+     "CustomErrorResponses": [
+      {
+       "ErrorCode": 403,
+       "ResponseCode": 200,
+       "ResponsePagePath": "/index.html"
+      },
+      {
+       "ErrorCode": 404,
+       "ResponseCode": 200,
+       "ResponsePagePath": "/index.html"
+      }
+     ],
+     "DefaultCacheBehavior": {
+      "CachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
+      "Compress": true,
+      "TargetOriginId": "deveventdataanalyzerFrontendStackReactSiteDistributionOrigin13C9D0DA8",
+      "ViewerProtocolPolicy": "redirect-to-https"
+     },
+     "DefaultRootObject": "index.html",
+     "Enabled": true,
+     "HttpVersion": "http2",
+     "IPV6Enabled": true,
+     "Origins": [
+      {
+       "DomainName": {
+        "Fn::GetAtt": [
+         "ReactSiteS3BucketB9BB7C04",
+         "RegionalDomainName"
+        ]
+       },
+       "Id": "deveventdataanalyzerFrontendStackReactSiteDistributionOrigin13C9D0DA8",
+       "S3OriginConfig": {
+        "OriginAccessIdentity": {
+         "Fn::Join": [
+          "",
+          [
+           "origin-access-identity/cloudfront/",
+           {
+            "Ref": "ReactSiteDistributionOrigin1S3OriginE341B3F7"
+           }
+          ]
+         ]
+        }
+       }
+      }
+     ]
+    },
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "event-data-analyzer"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ]
+   },
+   "DependsOn": [
+    "ReactSiteS3Deployment8044D733"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-FrontendStack/ReactSite/Distribution/Resource"
+   }
+  },
+  "ReactSiteCloudFrontInvalidatorServiceRole0398B530": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "event-data-analyzer"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-FrontendStack/ReactSite/CloudFrontInvalidator/ServiceRole/Resource"
+   }
+  },
+  "ReactSiteCloudFrontInvalidatorServiceRoleDefaultPolicyB61C59B5": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "cloudfront:GetInvalidation",
+        "cloudfront:CreateInvalidation"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "ReactSiteCloudFrontInvalidatorServiceRoleDefaultPolicyB61C59B5",
+    "Roles": [
+     {
+      "Ref": "ReactSiteCloudFrontInvalidatorServiceRole0398B530"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-FrontendStack/ReactSite/CloudFrontInvalidator/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "ReactSiteCloudFrontInvalidator335AA9F4": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-504522024136-us-west-2",
+     "S3Key": "7f9b0644cd8fdc8233b0e049ce57cf85b64369851fe06ec6a83824fdb2f8edf9.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "ReactSiteCloudFrontInvalidatorServiceRole0398B530",
+      "Arn"
+     ]
+    },
+    "Handler": "cf-invalidate.handler",
+    "Layers": [
+     {
+      "Ref": "ReactSiteAwsCliLayer032ED8F7"
+     }
+    ],
+    "MemorySize": 1024,
+    "Runtime": "python3.7",
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "event-data-analyzer"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ],
+    "Timeout": 900
+   },
+   "DependsOn": [
+    "ReactSiteCloudFrontInvalidatorServiceRoleDefaultPolicyB61C59B5",
+    "ReactSiteCloudFrontInvalidatorServiceRole0398B530"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-FrontendStack/ReactSite/CloudFrontInvalidator/Resource",
+    "aws:asset:path": "asset.7f9b0644cd8fdc8233b0e049ce57cf85b64369851fe06ec6a83824fdb2f8edf9",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "ReactSiteCloudFrontInvalidationFEE26148": {
+   "Type": "Custom::SSTCloudFrontInvalidation",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "ReactSiteCloudFrontInvalidator335AA9F4",
+      "Arn"
+     ]
+    },
+    "AssetsHash": "cd819291eb43d8a855025253fcad0423",
+    "DistributionId": {
+     "Ref": "ReactSiteDistributionFFB1766B"
+    },
+    "DistributionPaths": [
+     "/*"
+    ],
+    "WaitForInvalidation": false
+   },
+   "DependsOn": [
+    "ReactSiteDistributionOrigin1S3OriginE341B3F7",
+    "ReactSiteDistributionFFB1766B"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-FrontendStack/ReactSite/CloudFrontInvalidation/Default"
+   }
+  },
+  "ReactSiteParameterurl8CDE53DD": {
+   "Type": "AWS::SSM::Parameter",
+   "Properties": {
+    "Type": "String",
+    "Value": {
+     "Fn::Join": [
+      "",
+      [
+       "https://",
+       {
+        "Fn::GetAtt": [
+         "ReactSiteDistributionFFB1766B",
+         "DomainName"
+        ]
+       }
+      ]
+     ]
+    },
+    "Name": "/sst/event-data-analyzer/dev/ReactStaticSite/ReactSite/url",
+    "Tags": {
+     "sst:app": "event-data-analyzer",
+     "sst:stage": "dev"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-FrontendStack/ReactSite/Parameter_url/Resource"
+   }
+  },
+  "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ]
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-FrontendStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role"
+   }
+  },
+  "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-504522024136-us-west-2",
+     "S3Key": "3f51abb709b8e65167a45aeed02bab11540603d909005d7148230ba5ce6c74d7.zip"
+    },
+    "Timeout": 900,
+    "MemorySize": 128,
+    "Handler": "__entrypoint__.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs14.x",
+    "Description": {
+     "Fn::Join": [
+      "",
+      [
+       "Lambda function for auto-deleting objects in ",
+       {
+        "Ref": "ReactSiteS3BucketB9BB7C04"
+       },
+       " S3 bucket."
+      ]
+     ]
+    }
+   },
+   "DependsOn": [
+    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-FrontendStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler",
+    "aws:asset:path": "asset.3f51abb709b8e65167a45aeed02bab11540603d909005d7148230ba5ce6c74d7",
+    "aws:asset:property": "Code"
+   }
+  }
+ },
+ "Outputs": {
+  "ReactSiteSstSiteEnvREACTAPPAPIURL2A01004D": {
+   "Value": {
+    "Fn::ImportValue": "dev-event-data-analyzer-ApiStack:ExportsOutputFnGetAttApiCD79AAA0ApiEndpoint389C4905"
+   }
+  },
+  "ReactSiteSstSiteEnvREACTAPPREGIONBBB67CDE": {
+   "Value": "us-west-2"
+  },
+  "ReactSiteSstSiteEnvREACTAPPBUCKETB63B1A97": {
+   "Value": {
+    "Fn::ImportValue": "dev-event-data-analyzer-StorageStack:ExportsOutputRefUploadsBucketC4B27CC7CCC94A6B"
+   }
+  },
+  "ReactSiteSstSiteEnvREACTAPPUSERPOOLID08C215DE": {
+   "Value": {
+    "Fn::ImportValue": "dev-event-data-analyzer-AuthStack:ExportsOutputRefAuthUserPool8115E87F4F9C6D4C"
+   }
+  },
+  "ReactSiteSstSiteEnvREACTAPPIDENTITYPOOLIDD9D34008": {
+   "Value": {
+    "Fn::ImportValue": "dev-event-data-analyzer-AuthStack:ExportsOutputRefAuthIdentityPool12DFB5E192D02E93"
+   }
+  },
+  "ReactSiteSstSiteEnvREACTAPPUSERPOOLCLIENTID68892D5A": {
+   "Value": {
+    "Fn::ImportValue": "dev-event-data-analyzer-AuthStack:ExportsOutputRefAuthUserPoolClient0AA456E49BCE9731"
+   }
+  },
+  "SiteUrl": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Fn::GetAtt": [
+        "ReactSiteDistributionFFB1766B",
+        "DomainName"
+       ]
+      }
+     ]
+    ]
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

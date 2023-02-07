@@ -1,0 +1,1714 @@
+{
+ "Resources": {
+  "CustomResourceHandlerServiceRole41AEC181": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "event-data-analyzer"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/CustomResourceHandler/ServiceRole/Resource"
+   }
+  },
+  "CustomResourceHandlerServiceRoleDefaultPolicy73F93F56": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:PutObject",
+        "s3:DeleteObject"
+       ],
+       "Effect": "Allow",
+       "Resource": "arn:aws:s3:::sstbootstrap-uswest210626703-tkcejj58nwjs/*"
+      },
+      {
+       "Action": [
+        "ssm:GetParametersByPath",
+        "ssm:PutParameter"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        "arn:aws:ssm:us-west-2:504522024136:parameter/sst/event-data-analyzer/dev/*",
+        "arn:aws:ssm:us-west-2:504522024136:parameter/sst/event-data-analyzer/.fallback/*"
+       ]
+      },
+      {
+       "Action": [
+        "ssm:GetParameter",
+        "ssm:PutParameter",
+        "ssm:DeleteParameter"
+       ],
+       "Effect": "Allow",
+       "Resource": "arn:aws:ssm:us-west-2:504522024136:parameter/*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "CustomResourceHandlerServiceRoleDefaultPolicy73F93F56",
+    "Roles": [
+     {
+      "Ref": "CustomResourceHandlerServiceRole41AEC181"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/CustomResourceHandler/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "CustomResourceHandlerE8FB56BA": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-504522024136-us-west-2",
+     "S3Key": "377989a13861b4580168439d6861f200ef9082ee51cb10c5374964c056db8b47.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "CustomResourceHandlerServiceRole41AEC181",
+      "Arn"
+     ]
+    },
+    "Handler": "index.handler",
+    "MemorySize": 1024,
+    "Runtime": "nodejs16.x",
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "event-data-analyzer"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ],
+    "Timeout": 900
+   },
+   "DependsOn": [
+    "CustomResourceHandlerServiceRoleDefaultPolicy73F93F56",
+    "CustomResourceHandlerServiceRole41AEC181"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/CustomResourceHandler/Resource",
+    "aws:asset:path": "asset.377989a13861b4580168439d6861f200ef9082ee51cb10c5374964c056db8b47",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "StackMetadata": {
+   "Type": "Custom::StackMetadata",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomResourceHandlerE8FB56BA",
+      "Arn"
+     ]
+    },
+    "App": "event-data-analyzer",
+    "Stage": "dev",
+    "Stack": "dev-event-data-analyzer-ApiStack",
+    "SSTVersion": "1.18.4",
+    "BootstrapBucketName": "sstbootstrap-uswest210626703-tkcejj58nwjs",
+    "Metadata": [
+     {
+      "id": "Api",
+      "addr": "c82a0f68474ee138ce2c0caac6d27c2bd3f7151c1f",
+      "stack": "dev-event-data-analyzer-ApiStack",
+      "type": "Api",
+      "data": {
+       "graphql": false,
+       "url": {
+        "Fn::Join": [
+         "",
+         [
+          "https://",
+          {
+           "Ref": "ApiCD79AAA0"
+          },
+          ".execute-api.us-west-2.",
+          {
+           "Ref": "AWS::URLSuffix"
+          },
+          "/"
+         ]
+        ]
+       },
+       "httpApiId": {
+        "Ref": "ApiCD79AAA0"
+       },
+       "routes": [
+        {
+         "type": "function",
+         "route": "POST /events",
+         "fn": {
+          "node": "c82f33a1cdc8ab819b4ea3aaae6f7a120c90b41980",
+          "stack": "dev-event-data-analyzer-ApiStack"
+         }
+        },
+        {
+         "type": "function",
+         "route": "GET /events/{id}",
+         "fn": {
+          "node": "c87b1f0e0e836342f04ff423c882acd0abc9724c35",
+          "stack": "dev-event-data-analyzer-ApiStack"
+         }
+        },
+        {
+         "type": "function",
+         "route": "GET /events",
+         "fn": {
+          "node": "c80bb9669961b8043eb586fcba3282f5d7cb9b0dce",
+          "stack": "dev-event-data-analyzer-ApiStack"
+         }
+        },
+        {
+         "type": "function",
+         "route": "PUT /events/{id}",
+         "fn": {
+          "node": "c83677a5c33af878ad19b0616ee1072c2041a78d27",
+          "stack": "dev-event-data-analyzer-ApiStack"
+         }
+        },
+        {
+         "type": "function",
+         "route": "DELETE /events/{id}",
+         "fn": {
+          "node": "c83ad008f4cbeee85379da2457b12b631a5a35933b",
+          "stack": "dev-event-data-analyzer-ApiStack"
+         }
+        }
+       ]
+      }
+     },
+     {
+      "id": "Lambda_POST_--events",
+      "addr": "c82f33a1cdc8ab819b4ea3aaae6f7a120c90b41980",
+      "stack": "dev-event-data-analyzer-ApiStack",
+      "type": "Function",
+      "data": {
+       "localId": "dev-event-data-analyzer-ApiStack-Api-Lambda_POST_-events",
+       "arn": {
+        "Fn::GetAtt": [
+         "ApiLambdaPOSTevents097F9F00",
+         "Arn"
+        ]
+       },
+       "secrets": []
+      }
+     },
+     {
+      "id": "Lambda_GET_--events--{id}",
+      "addr": "c87b1f0e0e836342f04ff423c882acd0abc9724c35",
+      "stack": "dev-event-data-analyzer-ApiStack",
+      "type": "Function",
+      "data": {
+       "localId": "dev-event-data-analyzer-ApiStack-Api-Lambda_GET_-events-{id}",
+       "arn": {
+        "Fn::GetAtt": [
+         "ApiLambdaGETeventsid503AC473",
+         "Arn"
+        ]
+       },
+       "secrets": []
+      }
+     },
+     {
+      "id": "Lambda_GET_--events",
+      "addr": "c80bb9669961b8043eb586fcba3282f5d7cb9b0dce",
+      "stack": "dev-event-data-analyzer-ApiStack",
+      "type": "Function",
+      "data": {
+       "localId": "dev-event-data-analyzer-ApiStack-Api-Lambda_GET_-events",
+       "arn": {
+        "Fn::GetAtt": [
+         "ApiLambdaGETevents69466E7F",
+         "Arn"
+        ]
+       },
+       "secrets": []
+      }
+     },
+     {
+      "id": "Lambda_PUT_--events--{id}",
+      "addr": "c83677a5c33af878ad19b0616ee1072c2041a78d27",
+      "stack": "dev-event-data-analyzer-ApiStack",
+      "type": "Function",
+      "data": {
+       "localId": "dev-event-data-analyzer-ApiStack-Api-Lambda_PUT_-events-{id}",
+       "arn": {
+        "Fn::GetAtt": [
+         "ApiLambdaPUTeventsid097866BA",
+         "Arn"
+        ]
+       },
+       "secrets": []
+      }
+     },
+     {
+      "id": "Lambda_DELETE_--events--{id}",
+      "addr": "c83ad008f4cbeee85379da2457b12b631a5a35933b",
+      "stack": "dev-event-data-analyzer-ApiStack",
+      "type": "Function",
+      "data": {
+       "localId": "dev-event-data-analyzer-ApiStack-Api-Lambda_DELETE_-events-{id}",
+       "arn": {
+        "Fn::GetAtt": [
+         "ApiLambdaDELETEeventsid25FFB41D",
+         "Arn"
+        ]
+       },
+       "secrets": []
+      }
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/StackMetadata/Default"
+   }
+  },
+  "ApiCD79AAA0": {
+   "Type": "AWS::ApiGatewayV2::Api",
+   "Properties": {
+    "CorsConfiguration": {
+     "AllowCredentials": false,
+     "AllowHeaders": [
+      "*"
+     ],
+     "AllowMethods": [
+      "*"
+     ],
+     "AllowOrigins": [
+      "*"
+     ]
+    },
+    "Name": "dev-event-data-analyzer-Api",
+    "ProtocolType": "HTTP",
+    "Tags": {
+     "sst:app": "event-data-analyzer",
+     "sst:stage": "dev"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/Api/Api/Resource"
+   }
+  },
+  "ApiDefaultStage1AAE989B": {
+   "Type": "AWS::ApiGatewayV2::Stage",
+   "Properties": {
+    "ApiId": {
+     "Ref": "ApiCD79AAA0"
+    },
+    "StageName": "$default",
+    "AccessLogSettings": {
+     "DestinationArn": {
+      "Fn::GetAtt": [
+       "ApiLogGroup1717FE17",
+       "Arn"
+      ]
+     },
+     "Format": "{\"requestTime\":\"$context.requestTime\",\"requestId\":\"$context.requestId\",\"httpMethod\":\"$context.httpMethod\",\"path\":\"$context.path\",\"routeKey\":\"$context.routeKey\",\"status\":$context.status,\"responseLatency\":$context.responseLatency,\"integrationRequestId\":\"$context.integration.requestId\",\"integrationStatus\":\"$context.integration.status\",\"integrationLatency\":\"$context.integration.latency\",\"integrationServiceStatus\":\"$context.integration.integrationStatus\",\"ip\":\"$context.identity.sourceIp\",\"userAgent\":\"$context.identity.userAgent\",\"cognitoIdentityId\":\"$context.identity.cognitoIdentityId\"}"
+    },
+    "AutoDeploy": true,
+    "Tags": {
+     "sst:app": "event-data-analyzer",
+     "sst:stage": "dev"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/Api/Api/DefaultStage/Resource"
+   }
+  },
+  "ApiLogGroup1717FE17": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/vendedlogs/apis/dev-event-data-analyzer-Api-",
+       {
+        "Ref": "ApiCD79AAA0"
+       },
+       "/default"
+      ]
+     ]
+    },
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "event-data-analyzer"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/Api/LogGroup/Resource"
+   }
+  },
+  "ApiLambdaPOSTeventsServiceRole6D411B40": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "event-data-analyzer"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/Api/Lambda_POST_--events/ServiceRole/Resource"
+   }
+  },
+  "ApiLambdaPOSTeventsServiceRoleDefaultPolicyB1672AC4": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTraceSegments",
+        "xray:PutTelemetryRecords"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": "s3:*",
+       "Effect": "Allow",
+       "Resource": [
+        "arn:aws:s3:::dev-event-data-analyzer-debug-stac-bucket83908e77-1w246z4f8wb80",
+        "arn:aws:s3:::dev-event-data-analyzer-debug-stac-bucket83908e77-1w246z4f8wb80/*"
+       ]
+      },
+      {
+       "Action": "dynamodb:*",
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "dev-event-data-analyzer-StorageStack:ExportsOutputFnGetAttEventsTable4B7491D3ArnC8522F39"
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::ImportValue": "dev-event-data-analyzer-StorageStack:ExportsOutputFnGetAttEventsTable4B7491D3ArnC8522F39"
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "ApiLambdaPOSTeventsServiceRoleDefaultPolicyB1672AC4",
+    "Roles": [
+     {
+      "Ref": "ApiLambdaPOSTeventsServiceRole6D411B40"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/Api/Lambda_POST_--events/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "ApiLambdaPOSTevents097F9F00": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-504522024136-us-west-2",
+     "S3Key": "c0a9f72d7cb5c0876e09fc811c668fda40d7e4419689e9d5b4dd8d90a1089f49.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "ApiLambdaPOSTeventsServiceRole6D411B40",
+      "Arn"
+     ]
+    },
+    "Environment": {
+     "Variables": {
+      "TABLE_NAME": {
+       "Fn::ImportValue": "dev-event-data-analyzer-StorageStack:ExportsOutputRefEventsTable4B7491D3C6BE5608"
+      },
+      "SST_DEBUG_SRC_PATH": "services",
+      "SST_DEBUG_SRC_HANDLER": "functions/create.main",
+      "SST_DEBUG_ENDPOINT": "wss://4rm0tdvin9.execute-api.us-west-2.amazonaws.com/dev",
+      "SST_DEBUG_BUCKET_NAME": "dev-event-data-analyzer-debug-stac-bucket83908e77-1w246z4f8wb80",
+      "SST_FUNCTION_ID": "dev-event-data-analyzer-ApiStack-Api-Lambda_POST_-events",
+      "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+      "SST_APP": "event-data-analyzer",
+      "SST_STAGE": "dev",
+      "SST_DEBUG_IS_API_ROUTE": "1"
+     }
+    },
+    "EphemeralStorage": {
+     "Size": 512
+    },
+    "Handler": "index.main",
+    "MemorySize": 1024,
+    "Runtime": "nodejs16.x",
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "event-data-analyzer"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ],
+    "Timeout": 10,
+    "TracingConfig": {
+     "Mode": "Active"
+    }
+   },
+   "DependsOn": [
+    "ApiLambdaPOSTeventsServiceRoleDefaultPolicyB1672AC4",
+    "ApiLambdaPOSTeventsServiceRole6D411B40"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/Api/Lambda_POST_--events/Resource",
+    "aws:asset:path": "asset.c0a9f72d7cb5c0876e09fc811c668fda40d7e4419689e9d5b4dd8d90a1089f49.zip",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "ApiLambdaPOSTeventsEventInvokeConfigCAC6C79B": {
+   "Type": "AWS::Lambda::EventInvokeConfig",
+   "Properties": {
+    "FunctionName": {
+     "Ref": "ApiLambdaPOSTevents097F9F00"
+    },
+    "Qualifier": "$LATEST",
+    "MaximumRetryAttempts": 0
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/Api/Lambda_POST_--events/EventInvokeConfig/Resource"
+   }
+  },
+  "ApiRoutePOSTeventsIntegrationPOSTeventsB8A516A0": {
+   "Type": "AWS::ApiGatewayV2::Integration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "ApiCD79AAA0"
+    },
+    "IntegrationType": "AWS_PROXY",
+    "IntegrationUri": {
+     "Fn::GetAtt": [
+      "ApiLambdaPOSTevents097F9F00",
+      "Arn"
+     ]
+    },
+    "PayloadFormatVersion": "2.0"
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/Api/Route_POST_--events/Integration_POST_--events/Resource"
+   }
+  },
+  "ApiRoutePOSTeventsIntegrationPOSTeventsPermissionF8626170": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ApiLambdaPOSTevents097F9F00",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:us-west-2:504522024136:",
+       {
+        "Ref": "ApiCD79AAA0"
+       },
+       "/*/*/events"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/Api/Route_POST_--events/Integration_POST_--events-Permission"
+   }
+  },
+  "ApiRoutePOSTeventsA0FC87CB": {
+   "Type": "AWS::ApiGatewayV2::Route",
+   "Properties": {
+    "ApiId": {
+     "Ref": "ApiCD79AAA0"
+    },
+    "RouteKey": "POST /events",
+    "AuthorizationType": "AWS_IAM",
+    "Target": {
+     "Fn::Join": [
+      "",
+      [
+       "integrations/",
+       {
+        "Ref": "ApiRoutePOSTeventsIntegrationPOSTeventsB8A516A0"
+       }
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/Api/Route_POST_--events/Resource"
+   }
+  },
+  "ApiLambdaGETeventsidServiceRole7A5B80E7": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "event-data-analyzer"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/Api/Lambda_GET_--events--{id}/ServiceRole/Resource"
+   }
+  },
+  "ApiLambdaGETeventsidServiceRoleDefaultPolicyB0AEC2EC": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTraceSegments",
+        "xray:PutTelemetryRecords"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": "s3:*",
+       "Effect": "Allow",
+       "Resource": [
+        "arn:aws:s3:::dev-event-data-analyzer-debug-stac-bucket83908e77-1w246z4f8wb80",
+        "arn:aws:s3:::dev-event-data-analyzer-debug-stac-bucket83908e77-1w246z4f8wb80/*"
+       ]
+      },
+      {
+       "Action": "dynamodb:*",
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "dev-event-data-analyzer-StorageStack:ExportsOutputFnGetAttEventsTable4B7491D3ArnC8522F39"
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::ImportValue": "dev-event-data-analyzer-StorageStack:ExportsOutputFnGetAttEventsTable4B7491D3ArnC8522F39"
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "ApiLambdaGETeventsidServiceRoleDefaultPolicyB0AEC2EC",
+    "Roles": [
+     {
+      "Ref": "ApiLambdaGETeventsidServiceRole7A5B80E7"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/Api/Lambda_GET_--events--{id}/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "ApiLambdaGETeventsid503AC473": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-504522024136-us-west-2",
+     "S3Key": "c0a9f72d7cb5c0876e09fc811c668fda40d7e4419689e9d5b4dd8d90a1089f49.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "ApiLambdaGETeventsidServiceRole7A5B80E7",
+      "Arn"
+     ]
+    },
+    "Environment": {
+     "Variables": {
+      "TABLE_NAME": {
+       "Fn::ImportValue": "dev-event-data-analyzer-StorageStack:ExportsOutputRefEventsTable4B7491D3C6BE5608"
+      },
+      "SST_DEBUG_SRC_PATH": "services",
+      "SST_DEBUG_SRC_HANDLER": "functions/get.main",
+      "SST_DEBUG_ENDPOINT": "wss://4rm0tdvin9.execute-api.us-west-2.amazonaws.com/dev",
+      "SST_DEBUG_BUCKET_NAME": "dev-event-data-analyzer-debug-stac-bucket83908e77-1w246z4f8wb80",
+      "SST_FUNCTION_ID": "dev-event-data-analyzer-ApiStack-Api-Lambda_GET_-events-{id}",
+      "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+      "SST_APP": "event-data-analyzer",
+      "SST_STAGE": "dev",
+      "SST_DEBUG_IS_API_ROUTE": "1"
+     }
+    },
+    "EphemeralStorage": {
+     "Size": 512
+    },
+    "Handler": "index.main",
+    "MemorySize": 1024,
+    "Runtime": "nodejs16.x",
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "event-data-analyzer"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ],
+    "Timeout": 10,
+    "TracingConfig": {
+     "Mode": "Active"
+    }
+   },
+   "DependsOn": [
+    "ApiLambdaGETeventsidServiceRoleDefaultPolicyB0AEC2EC",
+    "ApiLambdaGETeventsidServiceRole7A5B80E7"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/Api/Lambda_GET_--events--{id}/Resource",
+    "aws:asset:path": "asset.c0a9f72d7cb5c0876e09fc811c668fda40d7e4419689e9d5b4dd8d90a1089f49.zip",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "ApiLambdaGETeventsidEventInvokeConfig860A4573": {
+   "Type": "AWS::Lambda::EventInvokeConfig",
+   "Properties": {
+    "FunctionName": {
+     "Ref": "ApiLambdaGETeventsid503AC473"
+    },
+    "Qualifier": "$LATEST",
+    "MaximumRetryAttempts": 0
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/Api/Lambda_GET_--events--{id}/EventInvokeConfig/Resource"
+   }
+  },
+  "ApiRouteGETeventsidIntegrationGETeventsid7E7DD0C8": {
+   "Type": "AWS::ApiGatewayV2::Integration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "ApiCD79AAA0"
+    },
+    "IntegrationType": "AWS_PROXY",
+    "IntegrationUri": {
+     "Fn::GetAtt": [
+      "ApiLambdaGETeventsid503AC473",
+      "Arn"
+     ]
+    },
+    "PayloadFormatVersion": "2.0"
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/Api/Route_GET_--events--{id}/Integration_GET_--events--{id}/Resource"
+   }
+  },
+  "ApiRouteGETeventsidIntegrationGETeventsidPermissionCCFB784D": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ApiLambdaGETeventsid503AC473",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:us-west-2:504522024136:",
+       {
+        "Ref": "ApiCD79AAA0"
+       },
+       "/*/*/events/{id}"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/Api/Route_GET_--events--{id}/Integration_GET_--events--{id}-Permission"
+   }
+  },
+  "ApiRouteGETeventsid4BEC2D6F": {
+   "Type": "AWS::ApiGatewayV2::Route",
+   "Properties": {
+    "ApiId": {
+     "Ref": "ApiCD79AAA0"
+    },
+    "RouteKey": "GET /events/{id}",
+    "AuthorizationType": "AWS_IAM",
+    "Target": {
+     "Fn::Join": [
+      "",
+      [
+       "integrations/",
+       {
+        "Ref": "ApiRouteGETeventsidIntegrationGETeventsid7E7DD0C8"
+       }
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/Api/Route_GET_--events--{id}/Resource"
+   }
+  },
+  "ApiLambdaGETeventsServiceRole03F22700": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "event-data-analyzer"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/Api/Lambda_GET_--events/ServiceRole/Resource"
+   }
+  },
+  "ApiLambdaGETeventsServiceRoleDefaultPolicy0DD31B11": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTraceSegments",
+        "xray:PutTelemetryRecords"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": "s3:*",
+       "Effect": "Allow",
+       "Resource": [
+        "arn:aws:s3:::dev-event-data-analyzer-debug-stac-bucket83908e77-1w246z4f8wb80",
+        "arn:aws:s3:::dev-event-data-analyzer-debug-stac-bucket83908e77-1w246z4f8wb80/*"
+       ]
+      },
+      {
+       "Action": "dynamodb:*",
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "dev-event-data-analyzer-StorageStack:ExportsOutputFnGetAttEventsTable4B7491D3ArnC8522F39"
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::ImportValue": "dev-event-data-analyzer-StorageStack:ExportsOutputFnGetAttEventsTable4B7491D3ArnC8522F39"
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "ApiLambdaGETeventsServiceRoleDefaultPolicy0DD31B11",
+    "Roles": [
+     {
+      "Ref": "ApiLambdaGETeventsServiceRole03F22700"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/Api/Lambda_GET_--events/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "ApiLambdaGETevents69466E7F": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-504522024136-us-west-2",
+     "S3Key": "c0a9f72d7cb5c0876e09fc811c668fda40d7e4419689e9d5b4dd8d90a1089f49.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "ApiLambdaGETeventsServiceRole03F22700",
+      "Arn"
+     ]
+    },
+    "Environment": {
+     "Variables": {
+      "TABLE_NAME": {
+       "Fn::ImportValue": "dev-event-data-analyzer-StorageStack:ExportsOutputRefEventsTable4B7491D3C6BE5608"
+      },
+      "SST_DEBUG_SRC_PATH": "services",
+      "SST_DEBUG_SRC_HANDLER": "functions/list.main",
+      "SST_DEBUG_ENDPOINT": "wss://4rm0tdvin9.execute-api.us-west-2.amazonaws.com/dev",
+      "SST_DEBUG_BUCKET_NAME": "dev-event-data-analyzer-debug-stac-bucket83908e77-1w246z4f8wb80",
+      "SST_FUNCTION_ID": "dev-event-data-analyzer-ApiStack-Api-Lambda_GET_-events",
+      "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+      "SST_APP": "event-data-analyzer",
+      "SST_STAGE": "dev",
+      "SST_DEBUG_IS_API_ROUTE": "1"
+     }
+    },
+    "EphemeralStorage": {
+     "Size": 512
+    },
+    "Handler": "index.main",
+    "MemorySize": 1024,
+    "Runtime": "nodejs16.x",
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "event-data-analyzer"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ],
+    "Timeout": 10,
+    "TracingConfig": {
+     "Mode": "Active"
+    }
+   },
+   "DependsOn": [
+    "ApiLambdaGETeventsServiceRoleDefaultPolicy0DD31B11",
+    "ApiLambdaGETeventsServiceRole03F22700"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/Api/Lambda_GET_--events/Resource",
+    "aws:asset:path": "asset.c0a9f72d7cb5c0876e09fc811c668fda40d7e4419689e9d5b4dd8d90a1089f49.zip",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "ApiLambdaGETeventsEventInvokeConfig51B595D0": {
+   "Type": "AWS::Lambda::EventInvokeConfig",
+   "Properties": {
+    "FunctionName": {
+     "Ref": "ApiLambdaGETevents69466E7F"
+    },
+    "Qualifier": "$LATEST",
+    "MaximumRetryAttempts": 0
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/Api/Lambda_GET_--events/EventInvokeConfig/Resource"
+   }
+  },
+  "ApiRouteGETeventsIntegrationGETevents6ED6153D": {
+   "Type": "AWS::ApiGatewayV2::Integration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "ApiCD79AAA0"
+    },
+    "IntegrationType": "AWS_PROXY",
+    "IntegrationUri": {
+     "Fn::GetAtt": [
+      "ApiLambdaGETevents69466E7F",
+      "Arn"
+     ]
+    },
+    "PayloadFormatVersion": "2.0"
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/Api/Route_GET_--events/Integration_GET_--events/Resource"
+   }
+  },
+  "ApiRouteGETeventsIntegrationGETeventsPermissionBB158EAE": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ApiLambdaGETevents69466E7F",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:us-west-2:504522024136:",
+       {
+        "Ref": "ApiCD79AAA0"
+       },
+       "/*/*/events"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/Api/Route_GET_--events/Integration_GET_--events-Permission"
+   }
+  },
+  "ApiRouteGETevents19EFD6E3": {
+   "Type": "AWS::ApiGatewayV2::Route",
+   "Properties": {
+    "ApiId": {
+     "Ref": "ApiCD79AAA0"
+    },
+    "RouteKey": "GET /events",
+    "AuthorizationType": "AWS_IAM",
+    "Target": {
+     "Fn::Join": [
+      "",
+      [
+       "integrations/",
+       {
+        "Ref": "ApiRouteGETeventsIntegrationGETevents6ED6153D"
+       }
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/Api/Route_GET_--events/Resource"
+   }
+  },
+  "ApiLambdaPUTeventsidServiceRoleED81B630": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "event-data-analyzer"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/Api/Lambda_PUT_--events--{id}/ServiceRole/Resource"
+   }
+  },
+  "ApiLambdaPUTeventsidServiceRoleDefaultPolicyE0176659": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTraceSegments",
+        "xray:PutTelemetryRecords"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": "s3:*",
+       "Effect": "Allow",
+       "Resource": [
+        "arn:aws:s3:::dev-event-data-analyzer-debug-stac-bucket83908e77-1w246z4f8wb80",
+        "arn:aws:s3:::dev-event-data-analyzer-debug-stac-bucket83908e77-1w246z4f8wb80/*"
+       ]
+      },
+      {
+       "Action": "dynamodb:*",
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "dev-event-data-analyzer-StorageStack:ExportsOutputFnGetAttEventsTable4B7491D3ArnC8522F39"
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::ImportValue": "dev-event-data-analyzer-StorageStack:ExportsOutputFnGetAttEventsTable4B7491D3ArnC8522F39"
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "ApiLambdaPUTeventsidServiceRoleDefaultPolicyE0176659",
+    "Roles": [
+     {
+      "Ref": "ApiLambdaPUTeventsidServiceRoleED81B630"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/Api/Lambda_PUT_--events--{id}/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "ApiLambdaPUTeventsid097866BA": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-504522024136-us-west-2",
+     "S3Key": "c0a9f72d7cb5c0876e09fc811c668fda40d7e4419689e9d5b4dd8d90a1089f49.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "ApiLambdaPUTeventsidServiceRoleED81B630",
+      "Arn"
+     ]
+    },
+    "Environment": {
+     "Variables": {
+      "TABLE_NAME": {
+       "Fn::ImportValue": "dev-event-data-analyzer-StorageStack:ExportsOutputRefEventsTable4B7491D3C6BE5608"
+      },
+      "SST_DEBUG_SRC_PATH": "services",
+      "SST_DEBUG_SRC_HANDLER": "functions/update.main",
+      "SST_DEBUG_ENDPOINT": "wss://4rm0tdvin9.execute-api.us-west-2.amazonaws.com/dev",
+      "SST_DEBUG_BUCKET_NAME": "dev-event-data-analyzer-debug-stac-bucket83908e77-1w246z4f8wb80",
+      "SST_FUNCTION_ID": "dev-event-data-analyzer-ApiStack-Api-Lambda_PUT_-events-{id}",
+      "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+      "SST_APP": "event-data-analyzer",
+      "SST_STAGE": "dev",
+      "SST_DEBUG_IS_API_ROUTE": "1"
+     }
+    },
+    "EphemeralStorage": {
+     "Size": 512
+    },
+    "Handler": "index.main",
+    "MemorySize": 1024,
+    "Runtime": "nodejs16.x",
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "event-data-analyzer"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ],
+    "Timeout": 10,
+    "TracingConfig": {
+     "Mode": "Active"
+    }
+   },
+   "DependsOn": [
+    "ApiLambdaPUTeventsidServiceRoleDefaultPolicyE0176659",
+    "ApiLambdaPUTeventsidServiceRoleED81B630"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/Api/Lambda_PUT_--events--{id}/Resource",
+    "aws:asset:path": "asset.c0a9f72d7cb5c0876e09fc811c668fda40d7e4419689e9d5b4dd8d90a1089f49.zip",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "ApiLambdaPUTeventsidEventInvokeConfig66AC31E4": {
+   "Type": "AWS::Lambda::EventInvokeConfig",
+   "Properties": {
+    "FunctionName": {
+     "Ref": "ApiLambdaPUTeventsid097866BA"
+    },
+    "Qualifier": "$LATEST",
+    "MaximumRetryAttempts": 0
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/Api/Lambda_PUT_--events--{id}/EventInvokeConfig/Resource"
+   }
+  },
+  "ApiRoutePUTeventsidIntegrationPUTeventsidFA47FBB7": {
+   "Type": "AWS::ApiGatewayV2::Integration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "ApiCD79AAA0"
+    },
+    "IntegrationType": "AWS_PROXY",
+    "IntegrationUri": {
+     "Fn::GetAtt": [
+      "ApiLambdaPUTeventsid097866BA",
+      "Arn"
+     ]
+    },
+    "PayloadFormatVersion": "2.0"
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/Api/Route_PUT_--events--{id}/Integration_PUT_--events--{id}/Resource"
+   }
+  },
+  "ApiRoutePUTeventsidIntegrationPUTeventsidPermission0DBF6CC4": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ApiLambdaPUTeventsid097866BA",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:us-west-2:504522024136:",
+       {
+        "Ref": "ApiCD79AAA0"
+       },
+       "/*/*/events/{id}"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/Api/Route_PUT_--events--{id}/Integration_PUT_--events--{id}-Permission"
+   }
+  },
+  "ApiRoutePUTeventsidADB0D668": {
+   "Type": "AWS::ApiGatewayV2::Route",
+   "Properties": {
+    "ApiId": {
+     "Ref": "ApiCD79AAA0"
+    },
+    "RouteKey": "PUT /events/{id}",
+    "AuthorizationType": "AWS_IAM",
+    "Target": {
+     "Fn::Join": [
+      "",
+      [
+       "integrations/",
+       {
+        "Ref": "ApiRoutePUTeventsidIntegrationPUTeventsidFA47FBB7"
+       }
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/Api/Route_PUT_--events--{id}/Resource"
+   }
+  },
+  "ApiLambdaDELETEeventsidServiceRoleDCE83042": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "event-data-analyzer"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/Api/Lambda_DELETE_--events--{id}/ServiceRole/Resource"
+   }
+  },
+  "ApiLambdaDELETEeventsidServiceRoleDefaultPolicy11C93903": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTraceSegments",
+        "xray:PutTelemetryRecords"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": "s3:*",
+       "Effect": "Allow",
+       "Resource": [
+        "arn:aws:s3:::dev-event-data-analyzer-debug-stac-bucket83908e77-1w246z4f8wb80",
+        "arn:aws:s3:::dev-event-data-analyzer-debug-stac-bucket83908e77-1w246z4f8wb80/*"
+       ]
+      },
+      {
+       "Action": "dynamodb:*",
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "dev-event-data-analyzer-StorageStack:ExportsOutputFnGetAttEventsTable4B7491D3ArnC8522F39"
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::ImportValue": "dev-event-data-analyzer-StorageStack:ExportsOutputFnGetAttEventsTable4B7491D3ArnC8522F39"
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "ApiLambdaDELETEeventsidServiceRoleDefaultPolicy11C93903",
+    "Roles": [
+     {
+      "Ref": "ApiLambdaDELETEeventsidServiceRoleDCE83042"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/Api/Lambda_DELETE_--events--{id}/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "ApiLambdaDELETEeventsid25FFB41D": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-504522024136-us-west-2",
+     "S3Key": "c0a9f72d7cb5c0876e09fc811c668fda40d7e4419689e9d5b4dd8d90a1089f49.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "ApiLambdaDELETEeventsidServiceRoleDCE83042",
+      "Arn"
+     ]
+    },
+    "Environment": {
+     "Variables": {
+      "TABLE_NAME": {
+       "Fn::ImportValue": "dev-event-data-analyzer-StorageStack:ExportsOutputRefEventsTable4B7491D3C6BE5608"
+      },
+      "SST_DEBUG_SRC_PATH": "services",
+      "SST_DEBUG_SRC_HANDLER": "functions/delete.main",
+      "SST_DEBUG_ENDPOINT": "wss://4rm0tdvin9.execute-api.us-west-2.amazonaws.com/dev",
+      "SST_DEBUG_BUCKET_NAME": "dev-event-data-analyzer-debug-stac-bucket83908e77-1w246z4f8wb80",
+      "SST_FUNCTION_ID": "dev-event-data-analyzer-ApiStack-Api-Lambda_DELETE_-events-{id}",
+      "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+      "SST_APP": "event-data-analyzer",
+      "SST_STAGE": "dev",
+      "SST_DEBUG_IS_API_ROUTE": "1"
+     }
+    },
+    "EphemeralStorage": {
+     "Size": 512
+    },
+    "Handler": "index.main",
+    "MemorySize": 1024,
+    "Runtime": "nodejs16.x",
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "event-data-analyzer"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ],
+    "Timeout": 10,
+    "TracingConfig": {
+     "Mode": "Active"
+    }
+   },
+   "DependsOn": [
+    "ApiLambdaDELETEeventsidServiceRoleDefaultPolicy11C93903",
+    "ApiLambdaDELETEeventsidServiceRoleDCE83042"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/Api/Lambda_DELETE_--events--{id}/Resource",
+    "aws:asset:path": "asset.c0a9f72d7cb5c0876e09fc811c668fda40d7e4419689e9d5b4dd8d90a1089f49.zip",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "ApiLambdaDELETEeventsidEventInvokeConfig40B527DA": {
+   "Type": "AWS::Lambda::EventInvokeConfig",
+   "Properties": {
+    "FunctionName": {
+     "Ref": "ApiLambdaDELETEeventsid25FFB41D"
+    },
+    "Qualifier": "$LATEST",
+    "MaximumRetryAttempts": 0
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/Api/Lambda_DELETE_--events--{id}/EventInvokeConfig/Resource"
+   }
+  },
+  "ApiRouteDELETEeventsidIntegrationDELETEeventsid3D30F124": {
+   "Type": "AWS::ApiGatewayV2::Integration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "ApiCD79AAA0"
+    },
+    "IntegrationType": "AWS_PROXY",
+    "IntegrationUri": {
+     "Fn::GetAtt": [
+      "ApiLambdaDELETEeventsid25FFB41D",
+      "Arn"
+     ]
+    },
+    "PayloadFormatVersion": "2.0"
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/Api/Route_DELETE_--events--{id}/Integration_DELETE_--events--{id}/Resource"
+   }
+  },
+  "ApiRouteDELETEeventsidIntegrationDELETEeventsidPermission24AE2C0F": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ApiLambdaDELETEeventsid25FFB41D",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:us-west-2:504522024136:",
+       {
+        "Ref": "ApiCD79AAA0"
+       },
+       "/*/*/events/{id}"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/Api/Route_DELETE_--events--{id}/Integration_DELETE_--events--{id}-Permission"
+   }
+  },
+  "ApiRouteDELETEeventsid0DB04800": {
+   "Type": "AWS::ApiGatewayV2::Route",
+   "Properties": {
+    "ApiId": {
+     "Ref": "ApiCD79AAA0"
+    },
+    "RouteKey": "DELETE /events/{id}",
+    "AuthorizationType": "AWS_IAM",
+    "Target": {
+     "Fn::Join": [
+      "",
+      [
+       "integrations/",
+       {
+        "Ref": "ApiRouteDELETEeventsidIntegrationDELETEeventsid3D30F124"
+       }
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/Api/Route_DELETE_--events--{id}/Resource"
+   }
+  },
+  "ApiParameterurl09B86AB9": {
+   "Type": "AWS::SSM::Parameter",
+   "Properties": {
+    "Type": "String",
+    "Value": {
+     "Fn::GetAtt": [
+      "ApiCD79AAA0",
+      "ApiEndpoint"
+     ]
+    },
+    "Name": "/sst/event-data-analyzer/dev/Api/Api/url",
+    "Tags": {
+     "sst:app": "event-data-analyzer",
+     "sst:stage": "dev"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-ApiStack/Api/Parameter_url/Resource"
+   }
+  }
+ },
+ "Outputs": {
+  "ApiEndpoint": {
+   "Value": {
+    "Fn::GetAtt": [
+     "ApiCD79AAA0",
+     "ApiEndpoint"
+    ]
+   }
+  },
+  "ExportsOutputRefApiCD79AAA0A1504A18": {
+   "Value": {
+    "Ref": "ApiCD79AAA0"
+   },
+   "Export": {
+    "Name": "dev-event-data-analyzer-ApiStack:ExportsOutputRefApiCD79AAA0A1504A18"
+   }
+  },
+  "ExportsOutputFnGetAttApiCD79AAA0ApiEndpoint389C4905": {
+   "Value": {
+    "Fn::GetAtt": [
+     "ApiCD79AAA0",
+     "ApiEndpoint"
+    ]
+   },
+   "Export": {
+    "Name": "dev-event-data-analyzer-ApiStack:ExportsOutputFnGetAttApiCD79AAA0ApiEndpoint389C4905"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

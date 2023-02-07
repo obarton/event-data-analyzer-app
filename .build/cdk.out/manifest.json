@@ -1,0 +1,937 @@
+{
+  "version": "21.0.0",
+  "artifacts": {
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    },
+    "dev-event-data-analyzer-StorageStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "dev-event-data-analyzer-StorageStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "dev-event-data-analyzer-StorageStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://504522024136/us-west-2",
+      "properties": {
+        "templateFile": "dev-event-data-analyzer-StorageStack.template.json",
+        "tags": {
+          "sst:app": "event-data-analyzer",
+          "sst:stage": "dev"
+        },
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::504522024136:role/cdk-hnb659fds-deploy-role-504522024136-us-west-2",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::504522024136:role/cdk-hnb659fds-cfn-exec-role-504522024136-us-west-2",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-504522024136-us-west-2/9fdf9e58a6ced378ffd8bc0cbd98a0731f470e174135c076da36a87f910936a6.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "dev-event-data-analyzer-StorageStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::504522024136:role/cdk-hnb659fds-lookup-role-504522024136-us-west-2",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "dev-event-data-analyzer-StorageStack.assets"
+      ],
+      "metadata": {
+        "/dev-event-data-analyzer-StorageStack": [
+          {
+            "type": "aws:cdk:stack-tags",
+            "data": [
+              {
+                "Key": "sst:app",
+                "Value": "event-data-analyzer"
+              },
+              {
+                "Key": "sst:stage",
+                "Value": "dev"
+              }
+            ]
+          }
+        ],
+        "/dev-event-data-analyzer-StorageStack/CustomResourceHandler/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomResourceHandlerServiceRole41AEC181"
+          }
+        ],
+        "/dev-event-data-analyzer-StorageStack/CustomResourceHandler/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomResourceHandlerServiceRoleDefaultPolicy73F93F56"
+          }
+        ],
+        "/dev-event-data-analyzer-StorageStack/CustomResourceHandler/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomResourceHandlerE8FB56BA"
+          }
+        ],
+        "/dev-event-data-analyzer-StorageStack/StackMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StackMetadata"
+          }
+        ],
+        "/dev-event-data-analyzer-StorageStack/Uploads/Bucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UploadsBucketC4B27CC7"
+          }
+        ],
+        "/dev-event-data-analyzer-StorageStack/Uploads/Parameter_bucketName/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UploadsParameterbucketNameF87AC662"
+          }
+        ],
+        "/dev-event-data-analyzer-StorageStack/Events/Table": [
+          {
+            "type": "aws:cdk:hasPhysicalName",
+            "data": {
+              "Ref": "EventsTable4B7491D3"
+            }
+          }
+        ],
+        "/dev-event-data-analyzer-StorageStack/Events/Table/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EventsTable4B7491D3"
+          }
+        ],
+        "/dev-event-data-analyzer-StorageStack/Events/Parameter_tableName/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EventsParametertableNameDE79ACC1"
+          }
+        ],
+        "/dev-event-data-analyzer-StorageStack/Exports/Output{\"Fn::GetAtt\":[\"EventsTable4B7491D3\",\"Arn\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttEventsTable4B7491D3ArnC8522F39"
+          }
+        ],
+        "/dev-event-data-analyzer-StorageStack/Exports/Output{\"Ref\":\"EventsTable4B7491D3\"}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputRefEventsTable4B7491D3C6BE5608"
+          }
+        ],
+        "/dev-event-data-analyzer-StorageStack/Exports/Output{\"Fn::GetAtt\":[\"UploadsBucketC4B27CC7\",\"Arn\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttUploadsBucketC4B27CC7Arn515ECA45"
+          }
+        ],
+        "/dev-event-data-analyzer-StorageStack/Exports/Output{\"Ref\":\"UploadsBucketC4B27CC7\"}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputRefUploadsBucketC4B27CC7CCC94A6B"
+          }
+        ],
+        "/dev-event-data-analyzer-StorageStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/dev-event-data-analyzer-StorageStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "dev-event-data-analyzer-StorageStack"
+    },
+    "dev-event-data-analyzer-ApiStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "dev-event-data-analyzer-ApiStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "dev-event-data-analyzer-ApiStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://504522024136/us-west-2",
+      "properties": {
+        "templateFile": "dev-event-data-analyzer-ApiStack.template.json",
+        "tags": {
+          "sst:app": "event-data-analyzer",
+          "sst:stage": "dev"
+        },
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::504522024136:role/cdk-hnb659fds-deploy-role-504522024136-us-west-2",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::504522024136:role/cdk-hnb659fds-cfn-exec-role-504522024136-us-west-2",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-504522024136-us-west-2/ebdb70e165fac70b867419b0e809cfe660a2897bac431cec7e92d540dce316d6.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "dev-event-data-analyzer-ApiStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::504522024136:role/cdk-hnb659fds-lookup-role-504522024136-us-west-2",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "dev-event-data-analyzer-StorageStack",
+        "dev-event-data-analyzer-ApiStack.assets"
+      ],
+      "metadata": {
+        "/dev-event-data-analyzer-ApiStack": [
+          {
+            "type": "aws:cdk:stack-tags",
+            "data": [
+              {
+                "Key": "sst:app",
+                "Value": "event-data-analyzer"
+              },
+              {
+                "Key": "sst:stage",
+                "Value": "dev"
+              }
+            ]
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/CustomResourceHandler/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomResourceHandlerServiceRole41AEC181"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/CustomResourceHandler/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomResourceHandlerServiceRoleDefaultPolicy73F93F56"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/CustomResourceHandler/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomResourceHandlerE8FB56BA"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/StackMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StackMetadata"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/Api/Api/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiCD79AAA0"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/Api/Api/DefaultStage/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiDefaultStage1AAE989B"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/Api/LogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiLogGroup1717FE17"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/Api/Lambda_POST_--events/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiLambdaPOSTeventsServiceRole6D411B40"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/Api/Lambda_POST_--events/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiLambdaPOSTeventsServiceRoleDefaultPolicyB1672AC4"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/Api/Lambda_POST_--events/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiLambdaPOSTevents097F9F00"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/Api/Lambda_POST_--events/EventInvokeConfig/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiLambdaPOSTeventsEventInvokeConfigCAC6C79B"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/Api/Route_POST_--events/Integration_POST_--events/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiRoutePOSTeventsIntegrationPOSTeventsB8A516A0"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/Api/Route_POST_--events/Integration_POST_--events-Permission": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiRoutePOSTeventsIntegrationPOSTeventsPermissionF8626170"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/Api/Route_POST_--events/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiRoutePOSTeventsA0FC87CB"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/Api/Lambda_GET_--events--{id}/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiLambdaGETeventsidServiceRole7A5B80E7"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/Api/Lambda_GET_--events--{id}/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiLambdaGETeventsidServiceRoleDefaultPolicyB0AEC2EC"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/Api/Lambda_GET_--events--{id}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiLambdaGETeventsid503AC473"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/Api/Lambda_GET_--events--{id}/EventInvokeConfig/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiLambdaGETeventsidEventInvokeConfig860A4573"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/Api/Route_GET_--events--{id}/Integration_GET_--events--{id}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiRouteGETeventsidIntegrationGETeventsid7E7DD0C8"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/Api/Route_GET_--events--{id}/Integration_GET_--events--{id}-Permission": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiRouteGETeventsidIntegrationGETeventsidPermissionCCFB784D"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/Api/Route_GET_--events--{id}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiRouteGETeventsid4BEC2D6F"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/Api/Lambda_GET_--events/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiLambdaGETeventsServiceRole03F22700"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/Api/Lambda_GET_--events/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiLambdaGETeventsServiceRoleDefaultPolicy0DD31B11"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/Api/Lambda_GET_--events/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiLambdaGETevents69466E7F"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/Api/Lambda_GET_--events/EventInvokeConfig/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiLambdaGETeventsEventInvokeConfig51B595D0"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/Api/Route_GET_--events/Integration_GET_--events/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiRouteGETeventsIntegrationGETevents6ED6153D"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/Api/Route_GET_--events/Integration_GET_--events-Permission": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiRouteGETeventsIntegrationGETeventsPermissionBB158EAE"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/Api/Route_GET_--events/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiRouteGETevents19EFD6E3"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/Api/Lambda_PUT_--events--{id}/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiLambdaPUTeventsidServiceRoleED81B630"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/Api/Lambda_PUT_--events--{id}/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiLambdaPUTeventsidServiceRoleDefaultPolicyE0176659"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/Api/Lambda_PUT_--events--{id}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiLambdaPUTeventsid097866BA"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/Api/Lambda_PUT_--events--{id}/EventInvokeConfig/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiLambdaPUTeventsidEventInvokeConfig66AC31E4"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/Api/Route_PUT_--events--{id}/Integration_PUT_--events--{id}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiRoutePUTeventsidIntegrationPUTeventsidFA47FBB7"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/Api/Route_PUT_--events--{id}/Integration_PUT_--events--{id}-Permission": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiRoutePUTeventsidIntegrationPUTeventsidPermission0DBF6CC4"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/Api/Route_PUT_--events--{id}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiRoutePUTeventsidADB0D668"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/Api/Lambda_DELETE_--events--{id}/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiLambdaDELETEeventsidServiceRoleDCE83042"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/Api/Lambda_DELETE_--events--{id}/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiLambdaDELETEeventsidServiceRoleDefaultPolicy11C93903"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/Api/Lambda_DELETE_--events--{id}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiLambdaDELETEeventsid25FFB41D"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/Api/Lambda_DELETE_--events--{id}/EventInvokeConfig/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiLambdaDELETEeventsidEventInvokeConfig40B527DA"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/Api/Route_DELETE_--events--{id}/Integration_DELETE_--events--{id}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiRouteDELETEeventsidIntegrationDELETEeventsid3D30F124"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/Api/Route_DELETE_--events--{id}/Integration_DELETE_--events--{id}-Permission": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiRouteDELETEeventsidIntegrationDELETEeventsidPermission24AE2C0F"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/Api/Route_DELETE_--events--{id}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiRouteDELETEeventsid0DB04800"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/Api/Parameter_url/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiParameterurl09B86AB9"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/ApiEndpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiEndpoint"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/Exports/Output{\"Ref\":\"ApiCD79AAA0\"}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputRefApiCD79AAA0A1504A18"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/Exports/Output{\"Fn::GetAtt\":[\"ApiCD79AAA0\",\"ApiEndpoint\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttApiCD79AAA0ApiEndpoint389C4905"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/dev-event-data-analyzer-ApiStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "dev-event-data-analyzer-ApiStack"
+    },
+    "dev-event-data-analyzer-AuthStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "dev-event-data-analyzer-AuthStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "dev-event-data-analyzer-AuthStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://504522024136/us-west-2",
+      "properties": {
+        "templateFile": "dev-event-data-analyzer-AuthStack.template.json",
+        "tags": {
+          "sst:app": "event-data-analyzer",
+          "sst:stage": "dev"
+        },
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::504522024136:role/cdk-hnb659fds-deploy-role-504522024136-us-west-2",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::504522024136:role/cdk-hnb659fds-cfn-exec-role-504522024136-us-west-2",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-504522024136-us-west-2/abf60e21f252c0823a4ad21f2295938511db7de7c52a6b1c0b0d75de9f915bba.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "dev-event-data-analyzer-AuthStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::504522024136:role/cdk-hnb659fds-lookup-role-504522024136-us-west-2",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "dev-event-data-analyzer-ApiStack",
+        "dev-event-data-analyzer-StorageStack",
+        "dev-event-data-analyzer-AuthStack.assets"
+      ],
+      "metadata": {
+        "/dev-event-data-analyzer-AuthStack": [
+          {
+            "type": "aws:cdk:stack-tags",
+            "data": [
+              {
+                "Key": "sst:app",
+                "Value": "event-data-analyzer"
+              },
+              {
+                "Key": "sst:stage",
+                "Value": "dev"
+              }
+            ]
+          }
+        ],
+        "/dev-event-data-analyzer-AuthStack/CustomResourceHandler/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomResourceHandlerServiceRole41AEC181"
+          }
+        ],
+        "/dev-event-data-analyzer-AuthStack/CustomResourceHandler/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomResourceHandlerServiceRoleDefaultPolicy73F93F56"
+          }
+        ],
+        "/dev-event-data-analyzer-AuthStack/CustomResourceHandler/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomResourceHandlerE8FB56BA"
+          }
+        ],
+        "/dev-event-data-analyzer-AuthStack/StackMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StackMetadata"
+          }
+        ],
+        "/dev-event-data-analyzer-AuthStack/Auth/UserPool/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AuthUserPool8115E87F"
+          }
+        ],
+        "/dev-event-data-analyzer-AuthStack/Auth/UserPoolClient/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AuthUserPoolClient0AA456E4"
+          }
+        ],
+        "/dev-event-data-analyzer-AuthStack/Auth/IdentityPool": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AuthIdentityPool12DFB5E1"
+          }
+        ],
+        "/dev-event-data-analyzer-AuthStack/Auth/IdentityPoolAuthRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AuthIdentityPoolAuthRoleD14DA003"
+          }
+        ],
+        "/dev-event-data-analyzer-AuthStack/Auth/IdentityPoolAuthRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AuthIdentityPoolAuthRoleDefaultPolicy32D17CAC"
+          }
+        ],
+        "/dev-event-data-analyzer-AuthStack/Auth/IdentityPoolUnauthRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AuthIdentityPoolUnauthRoleA8DE48F3"
+          }
+        ],
+        "/dev-event-data-analyzer-AuthStack/Auth/IdentityPoolUnauthRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AuthIdentityPoolUnauthRoleDefaultPolicy0417F857"
+          }
+        ],
+        "/dev-event-data-analyzer-AuthStack/Auth/IdentityPoolRoleAttachment": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AuthIdentityPoolRoleAttachmentB0D3DC72"
+          }
+        ],
+        "/dev-event-data-analyzer-AuthStack/Region": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Region"
+          }
+        ],
+        "/dev-event-data-analyzer-AuthStack/UserPoolId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserPoolId"
+          }
+        ],
+        "/dev-event-data-analyzer-AuthStack/IdentityPoolId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "IdentityPoolId"
+          }
+        ],
+        "/dev-event-data-analyzer-AuthStack/UserPoolClientId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserPoolClientId"
+          }
+        ],
+        "/dev-event-data-analyzer-AuthStack/Exports/Output{\"Ref\":\"AuthUserPool8115E87F\"}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputRefAuthUserPool8115E87F4F9C6D4C"
+          }
+        ],
+        "/dev-event-data-analyzer-AuthStack/Exports/Output{\"Ref\":\"AuthIdentityPool12DFB5E1\"}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputRefAuthIdentityPool12DFB5E192D02E93"
+          }
+        ],
+        "/dev-event-data-analyzer-AuthStack/Exports/Output{\"Ref\":\"AuthUserPoolClient0AA456E4\"}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputRefAuthUserPoolClient0AA456E49BCE9731"
+          }
+        ],
+        "/dev-event-data-analyzer-AuthStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/dev-event-data-analyzer-AuthStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "dev-event-data-analyzer-AuthStack"
+    },
+    "dev-event-data-analyzer-FrontendStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "dev-event-data-analyzer-FrontendStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "dev-event-data-analyzer-FrontendStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://504522024136/us-west-2",
+      "properties": {
+        "templateFile": "dev-event-data-analyzer-FrontendStack.template.json",
+        "tags": {
+          "sst:app": "event-data-analyzer",
+          "sst:stage": "dev"
+        },
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::504522024136:role/cdk-hnb659fds-deploy-role-504522024136-us-west-2",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::504522024136:role/cdk-hnb659fds-cfn-exec-role-504522024136-us-west-2",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-504522024136-us-west-2/99d5b7e091f5b4b8ed26d3b8b09809162e2d65d90908c409840893a12af4ce2d.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "dev-event-data-analyzer-FrontendStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::504522024136:role/cdk-hnb659fds-lookup-role-504522024136-us-west-2",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "dev-event-data-analyzer-ApiStack",
+        "dev-event-data-analyzer-StorageStack",
+        "dev-event-data-analyzer-AuthStack",
+        "dev-event-data-analyzer-FrontendStack.assets"
+      ],
+      "metadata": {
+        "/dev-event-data-analyzer-FrontendStack": [
+          {
+            "type": "aws:cdk:stack-tags",
+            "data": [
+              {
+                "Key": "sst:app",
+                "Value": "event-data-analyzer"
+              },
+              {
+                "Key": "sst:stage",
+                "Value": "dev"
+              }
+            ]
+          }
+        ],
+        "/dev-event-data-analyzer-FrontendStack/CustomResourceHandler/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomResourceHandlerServiceRole41AEC181"
+          }
+        ],
+        "/dev-event-data-analyzer-FrontendStack/CustomResourceHandler/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomResourceHandlerServiceRoleDefaultPolicy73F93F56"
+          }
+        ],
+        "/dev-event-data-analyzer-FrontendStack/CustomResourceHandler/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomResourceHandlerE8FB56BA"
+          }
+        ],
+        "/dev-event-data-analyzer-FrontendStack/StackMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StackMetadata"
+          }
+        ],
+        "/dev-event-data-analyzer-FrontendStack/ReactSite/AwsCliLayer/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ReactSiteAwsCliLayer032ED8F7"
+          }
+        ],
+        "/dev-event-data-analyzer-FrontendStack/ReactSite/SstSiteEnv_REACT_APP_API_URL": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ReactSiteSstSiteEnvREACTAPPAPIURL2A01004D"
+          }
+        ],
+        "/dev-event-data-analyzer-FrontendStack/ReactSite/SstSiteEnv_REACT_APP_REGION": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ReactSiteSstSiteEnvREACTAPPREGIONBBB67CDE"
+          }
+        ],
+        "/dev-event-data-analyzer-FrontendStack/ReactSite/SstSiteEnv_REACT_APP_BUCKET": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ReactSiteSstSiteEnvREACTAPPBUCKETB63B1A97"
+          }
+        ],
+        "/dev-event-data-analyzer-FrontendStack/ReactSite/SstSiteEnv_REACT_APP_USER_POOL_ID": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ReactSiteSstSiteEnvREACTAPPUSERPOOLID08C215DE"
+          }
+        ],
+        "/dev-event-data-analyzer-FrontendStack/ReactSite/SstSiteEnv_REACT_APP_IDENTITY_POOL_ID": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ReactSiteSstSiteEnvREACTAPPIDENTITYPOOLIDD9D34008"
+          }
+        ],
+        "/dev-event-data-analyzer-FrontendStack/ReactSite/SstSiteEnv_REACT_APP_USER_POOL_CLIENT_ID": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ReactSiteSstSiteEnvREACTAPPUSERPOOLCLIENTID68892D5A"
+          }
+        ],
+        "/dev-event-data-analyzer-FrontendStack/ReactSite/S3Bucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ReactSiteS3BucketB9BB7C04"
+          }
+        ],
+        "/dev-event-data-analyzer-FrontendStack/ReactSite/S3Bucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ReactSiteS3BucketPolicyD88B458D"
+          }
+        ],
+        "/dev-event-data-analyzer-FrontendStack/ReactSite/S3Bucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ReactSiteS3BucketAutoDeleteObjectsCustomResource20A5650F"
+          }
+        ],
+        "/dev-event-data-analyzer-FrontendStack/ReactSite/S3Uploader/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ReactSiteS3UploaderServiceRoleEA10A23A"
+          }
+        ],
+        "/dev-event-data-analyzer-FrontendStack/ReactSite/S3Uploader/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ReactSiteS3UploaderServiceRoleDefaultPolicy2FE62292"
+          }
+        ],
+        "/dev-event-data-analyzer-FrontendStack/ReactSite/S3Uploader/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ReactSiteS3Uploader4099484B"
+          }
+        ],
+        "/dev-event-data-analyzer-FrontendStack/ReactSite/S3Handler/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ReactSiteS3HandlerServiceRoleB1C8F614"
+          }
+        ],
+        "/dev-event-data-analyzer-FrontendStack/ReactSite/S3Handler/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ReactSiteS3HandlerServiceRoleDefaultPolicy50C54561"
+          }
+        ],
+        "/dev-event-data-analyzer-FrontendStack/ReactSite/S3Handler/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ReactSiteS3HandlerE190AB4B"
+          }
+        ],
+        "/dev-event-data-analyzer-FrontendStack/ReactSite/S3Deployment/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ReactSiteS3Deployment8044D733"
+          }
+        ],
+        "/dev-event-data-analyzer-FrontendStack/ReactSite/Distribution/Origin1/S3Origin/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ReactSiteDistributionOrigin1S3OriginE341B3F7"
+          }
+        ],
+        "/dev-event-data-analyzer-FrontendStack/ReactSite/Distribution/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ReactSiteDistributionFFB1766B"
+          }
+        ],
+        "/dev-event-data-analyzer-FrontendStack/ReactSite/CloudFrontInvalidator/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ReactSiteCloudFrontInvalidatorServiceRole0398B530"
+          }
+        ],
+        "/dev-event-data-analyzer-FrontendStack/ReactSite/CloudFrontInvalidator/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ReactSiteCloudFrontInvalidatorServiceRoleDefaultPolicyB61C59B5"
+          }
+        ],
+        "/dev-event-data-analyzer-FrontendStack/ReactSite/CloudFrontInvalidator/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ReactSiteCloudFrontInvalidator335AA9F4"
+          }
+        ],
+        "/dev-event-data-analyzer-FrontendStack/ReactSite/CloudFrontInvalidation/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ReactSiteCloudFrontInvalidationFEE26148"
+          }
+        ],
+        "/dev-event-data-analyzer-FrontendStack/ReactSite/Parameter_url/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ReactSiteParameterurl8CDE53DD"
+          }
+        ],
+        "/dev-event-data-analyzer-FrontendStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+          }
+        ],
+        "/dev-event-data-analyzer-FrontendStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+          }
+        ],
+        "/dev-event-data-analyzer-FrontendStack/SiteUrl": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SiteUrl"
+          }
+        ],
+        "/dev-event-data-analyzer-FrontendStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/dev-event-data-analyzer-FrontendStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "dev-event-data-analyzer-FrontendStack"
+    }
+  }
+}

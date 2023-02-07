@@ -1,0 +1,5 @@
+{
+  "name": "event-data-analyzer",
+  "region": "us-west-2",
+  "main": "stacks/index.js"
+}

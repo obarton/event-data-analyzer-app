@@ -1,0 +1,375 @@
+{
+ "Resources": {
+  "CustomResourceHandlerServiceRole41AEC181": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "event-data-analyzer"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-StorageStack/CustomResourceHandler/ServiceRole/Resource"
+   }
+  },
+  "CustomResourceHandlerServiceRoleDefaultPolicy73F93F56": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:PutObject",
+        "s3:DeleteObject"
+       ],
+       "Effect": "Allow",
+       "Resource": "arn:aws:s3:::sstbootstrap-uswest210626703-tkcejj58nwjs/*"
+      },
+      {
+       "Action": [
+        "ssm:GetParametersByPath",
+        "ssm:PutParameter"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        "arn:aws:ssm:us-west-2:504522024136:parameter/sst/event-data-analyzer/dev/*",
+        "arn:aws:ssm:us-west-2:504522024136:parameter/sst/event-data-analyzer/.fallback/*"
+       ]
+      },
+      {
+       "Action": [
+        "ssm:GetParameter",
+        "ssm:PutParameter",
+        "ssm:DeleteParameter"
+       ],
+       "Effect": "Allow",
+       "Resource": "arn:aws:ssm:us-west-2:504522024136:parameter/*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "CustomResourceHandlerServiceRoleDefaultPolicy73F93F56",
+    "Roles": [
+     {
+      "Ref": "CustomResourceHandlerServiceRole41AEC181"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-StorageStack/CustomResourceHandler/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "CustomResourceHandlerE8FB56BA": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-504522024136-us-west-2",
+     "S3Key": "377989a13861b4580168439d6861f200ef9082ee51cb10c5374964c056db8b47.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "CustomResourceHandlerServiceRole41AEC181",
+      "Arn"
+     ]
+    },
+    "Handler": "index.handler",
+    "MemorySize": 1024,
+    "Runtime": "nodejs16.x",
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "event-data-analyzer"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ],
+    "Timeout": 900
+   },
+   "DependsOn": [
+    "CustomResourceHandlerServiceRoleDefaultPolicy73F93F56",
+    "CustomResourceHandlerServiceRole41AEC181"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-StorageStack/CustomResourceHandler/Resource",
+    "aws:asset:path": "asset.377989a13861b4580168439d6861f200ef9082ee51cb10c5374964c056db8b47",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "StackMetadata": {
+   "Type": "Custom::StackMetadata",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomResourceHandlerE8FB56BA",
+      "Arn"
+     ]
+    },
+    "App": "event-data-analyzer",
+    "Stage": "dev",
+    "Stack": "dev-event-data-analyzer-StorageStack",
+    "SSTVersion": "1.18.4",
+    "BootstrapBucketName": "sstbootstrap-uswest210626703-tkcejj58nwjs",
+    "Metadata": [
+     {
+      "id": "Uploads",
+      "addr": "c8832b38f48b0bec9e830cc509c8bf9d909044d0ee",
+      "stack": "dev-event-data-analyzer-StorageStack",
+      "type": "Bucket",
+      "data": {
+       "name": {
+        "Ref": "UploadsBucketC4B27CC7"
+       },
+       "notifications": [],
+       "notificationNames": []
+      }
+     },
+     {
+      "id": "Events",
+      "addr": "c8e198b14bbde5f957ce35f530db07a3a404065f3d",
+      "stack": "dev-event-data-analyzer-StorageStack",
+      "type": "Table",
+      "data": {
+       "tableName": {
+        "Ref": "EventsTable4B7491D3"
+       },
+       "consumers": []
+      }
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-StorageStack/StackMetadata/Default"
+   }
+  },
+  "UploadsBucketC4B27CC7": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "CorsConfiguration": {
+     "CorsRules": [
+      {
+       "AllowedHeaders": [
+        "*"
+       ],
+       "AllowedMethods": [
+        "GET",
+        "PUT",
+        "POST",
+        "DELETE",
+        "HEAD"
+       ],
+       "AllowedOrigins": [
+        "*"
+       ],
+       "MaxAge": 86400
+      }
+     ]
+    },
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "event-data-analyzer"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-StorageStack/Uploads/Bucket/Resource"
+   }
+  },
+  "UploadsParameterbucketNameF87AC662": {
+   "Type": "AWS::SSM::Parameter",
+   "Properties": {
+    "Type": "String",
+    "Value": {
+     "Ref": "UploadsBucketC4B27CC7"
+    },
+    "Name": "/sst/event-data-analyzer/dev/Bucket/Uploads/bucketName",
+    "Tags": {
+     "sst:app": "event-data-analyzer",
+     "sst:stage": "dev"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-StorageStack/Uploads/Parameter_bucketName/Resource"
+   }
+  },
+  "EventsTable4B7491D3": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "KeySchema": [
+     {
+      "AttributeName": "userId",
+      "KeyType": "HASH"
+     },
+     {
+      "AttributeName": "eventId",
+      "KeyType": "RANGE"
+     }
+    ],
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "userId",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "eventId",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "PointInTimeRecoverySpecification": {
+     "PointInTimeRecoveryEnabled": true
+    },
+    "TableName": "dev-event-data-analyzer-Events",
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "event-data-analyzer"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-StorageStack/Events/Table/Resource"
+   }
+  },
+  "EventsParametertableNameDE79ACC1": {
+   "Type": "AWS::SSM::Parameter",
+   "Properties": {
+    "Type": "String",
+    "Value": {
+     "Ref": "EventsTable4B7491D3"
+    },
+    "Name": "/sst/event-data-analyzer/dev/Table/Events/tableName",
+    "Tags": {
+     "sst:app": "event-data-analyzer",
+     "sst:stage": "dev"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dev-event-data-analyzer-StorageStack/Events/Parameter_tableName/Resource"
+   }
+  }
+ },
+ "Outputs": {
+  "ExportsOutputFnGetAttEventsTable4B7491D3ArnC8522F39": {
+   "Value": {
+    "Fn::GetAtt": [
+     "EventsTable4B7491D3",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": "dev-event-data-analyzer-StorageStack:ExportsOutputFnGetAttEventsTable4B7491D3ArnC8522F39"
+   }
+  },
+  "ExportsOutputRefEventsTable4B7491D3C6BE5608": {
+   "Value": {
+    "Ref": "EventsTable4B7491D3"
+   },
+   "Export": {
+    "Name": "dev-event-data-analyzer-StorageStack:ExportsOutputRefEventsTable4B7491D3C6BE5608"
+   }
+  },
+  "ExportsOutputFnGetAttUploadsBucketC4B27CC7Arn515ECA45": {
+   "Value": {
+    "Fn::GetAtt": [
+     "UploadsBucketC4B27CC7",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": "dev-event-data-analyzer-StorageStack:ExportsOutputFnGetAttUploadsBucketC4B27CC7Arn515ECA45"
+   }
+  },
+  "ExportsOutputRefUploadsBucketC4B27CC7CCC94A6B": {
+   "Value": {
+    "Ref": "UploadsBucketC4B27CC7"
+   },
+   "Export": {
+    "Name": "dev-event-data-analyzer-StorageStack:ExportsOutputRefUploadsBucketC4B27CC7CCC94A6B"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}
